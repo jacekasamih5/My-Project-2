@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rolex - الإرث</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #020604; 
+            --gold: #C5A059;
+            --gold-hover: #e0bc75;
+            --text-muted: #8892b0;
+            --text-light: #ccd6f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-light);
+            overflow-x: hidden;
+        }
+
+        /* ==========================================================================
+           شريط التنقل العلوي الفاخر (Header)
+           ========================================================================= */
+        header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 75px; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 8%;
+    background: rgba(3, 7, 5, 0.9);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 1000;
+}
+.logo-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 100%; 
+}
+
+.main-logo {
+    position: absolute; 
+    top: 50%;
+    transform: translateY(-50%); 
+    height: 55px; 
+    width: auto; 
+    object-fit: contain;
+}
+
+header nav {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+header nav a {
+    color: var(--text-muted);
+    text-decoration: none;
+    margin: 0 22px; 
+    font-size: 15px;
+    font-weight: 400;
+    transition: color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+header nav a:hover,
+header nav a.active {
+    color: var(--gold) !important;
+    cursor: pointer;
+}
+.lang-selector {
+    position: relative;
+    display: inline-block;
+}
+
+.lang-selector button {
+    background: transparent;
+    border: 1px solid rgba(197, 160, 89, 0.3);
+    color: var(--gold);
+    padding: 7px 16px;
+    cursor: pointer;
+    border-radius: 50px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 13px;
+    transition: all 0.3s ease;
+}
+
+.lang-selector button:hover {
+    border-color: var(--gold);
+    background: rgba(197, 160, 89, 0.05);
+}
+
+.dropdown-menu {
+    display: none; 
+    position: absolute;
+    top: 125%; 
+    background: rgba(7, 15, 11, 0.95) !important; 
+    backdrop-filter: blur(14px); 
+    -webkit-backdrop-filter: blur(14px);
+    min-width: 160px;
+    border: 1px solid rgba(197, 160, 89, 0.15); 
+    border-radius: 8px; 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); 
+    z-index: 2000;
+    padding: 6px 0;
+}
+
+body[dir="rtl"] .dropdown-menu { left: 0; right: auto; }
+body[dir="ltr"] .dropdown-menu { right: 0; left: auto; }
+
+.dropdown-menu span {
+    color: #b4bebe; 
+    padding: 10px 20px;
+    display: block;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 400;
+    text-align: right;
+    transition: all 0.25s ease;
+}
+
+.dropdown-menu.show {
+    display: block !important;
+}
+
+.dropdown-menu span:hover {
+    background: rgba(197, 160, 89, 0.08); 
+    color: var(--gold); 
+    padding-right: 25px; 
+}
+
+        /* ==========================================================================
+           ✨ قواعد التتابع والأنميشن المخصصة للأجزاء (Staggered Reveal) ✨
+           ========================================================================= */
+        .reveal-item {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                        transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            will-change: transform, opacity;
+        }
+
+        /* عندما تظهر الحاوية، يتم تفعيل الظهور */
+        .reveal-active .reveal-item {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* التحكم في ترتيب التتابع الزمني للظهور بالتوالي */
+        
+        /* 1. الصورة تظهر أولاً وبدون أي تأخير */
+        .reveal-active .delay-img {
+            transition-delay: 0s;
+        }
+
+        /* 2. السطر الفوقي (منذ 1905) يظهر بعد الصورة بـ 0.6 ثانية */
+        .reveal-active .delay-span {
+            transition-delay: 0.6s;
+        }
+
+        /* 3. العنوان الرئيسي يظهر بعد السطر الأول بـ 0.9 ثانية */
+        .reveal-active .delay-title {
+            transition-delay: 0.9s;
+        }
+
+        /* 4. الفقرة النصية الوصفية تظهر بعد العنوان بـ 1.2 ثانية */
+        .reveal-active .delay-desc {
+            transition-delay: 1.2s;
+        }
+
+        /* 5. شريط الإحصائيات الفوتر يظهر أخيراً بعد 1.5 ثانية */
+        .reveal-active .delay-stats {
+            transition-delay: 1.5s;
+        }
+
+        /* ==========================================================================
+           هيكل واجهة الإرث المتطابق مع الصورة الأصلية
+           ========================================================================= */
+        .heritage-section {
+            padding-top: 130px;
+            padding-bottom: 60px;
+            min-height: calc(100vh - 75px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .heritage-flex-container {
+            display: flex;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 6%;
+            gap: 60px;
+            align-items: center;
+        }
+
+        html[dir="rtl"] .heritage-flex-container { flex-direction: row; }
+        html[dir="ltr"] .heritage-flex-container { flex-direction: row-reverse; }
+
+        /* التحكم في أبعاد وحجم الصورة */
+        .heritage-img-wrapper {
+            flex: 1.1; 
+            width: 100%;
+            height: 400px; 
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+        }
+
+        .heritage-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .heritage-img-wrapper:hover img {
+            transform: scale(1.04);
+        }
+
+        /* حاوية النصوص */
+        .heritage-text-wrapper {
+            flex: 1.2;
+            display: flex;
+            flex-direction: column;
+        }
+
+        html[dir="rtl"] .heritage-text-wrapper { text-align: right; }
+        html[dir="ltr"] .heritage-text-wrapper { text-align: left; }
+
+        .heritage-text-wrapper .gold-span {
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 400;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .heritage-text-wrapper .main-title {
+            color: var(--gold);
+            font-size: 3.2rem;
+            font-weight: 400;
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+        }
+
+        .heritage-text-wrapper .desc-text {
+            color: var(--text-light);
+            font-size: 17px;
+            line-height: 1.8;
+            margin-bottom: 45px;
+            font-weight: 300;
+            max-width: 620px;
+        }
+
+        /* الإحصائيات الأفقية */
+        .horizontal-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 13.5px;
+            font-weight: 400;
+        }
+
+        .stat-item:not(:last-child)::after {
+            content: "|";
+            margin: 0 15px;
+            color: rgba(197, 160, 89, 0.4);
+            font-weight: 300;
+        }
+
+        footer {
+            text-align: center;
+            padding: 35px 20px;
+            border-top: 1px solid rgba(197, 160, 89, 0.05);
+            background: #010402;
+        }
+
+        footer p {
+            color: #647196;
+            font-size: 13px;
+        }
+
+        /* التجاوب مع الشاشات الصغيرة */
+        @media (max-width: 992px) {
+            .heritage-flex-container {
+                flex-direction: column-reverse !important;
+                gap: 40px;
+                padding-top: 40px;
+            }
+            .heritage-img-wrapper {
+                height: 380px;
+            }
+            .heritage-text-wrapper {
+                text-align: center !important;
+                align-items: center;
+            }
+            .horizontal-stats {
+                justify-content: center;
+            }
+            .stat-item:not(:last-child)::after {
+                margin: 0 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="./logo.png" alt="Rolex" class="main-logo" width="85">
+        </div>
+        <nav>
+            <a href="index.html" data-key="nav_home">الرئيسية</a>
+            <a href="projects.html" data-key="nav_collection">المجموعة</a>
+            <a href="about.html" class="active" data-key="nav_heritage">الإرث</a>
+            <a href="contact.html" data-key="nav_contact">تواصل</a>
+        </nav>
+        <div class="lang-selector">
+            <button id="langBtn">🌐 AR العربية</button>
+            <div id="langDropdown" class="dropdown-menu">
+                <span data-lang="en">EN English</span>
+                <span data-lang="ar">AR العربية</span>
+                <span data-lang="fr">FR Français</span>
+                <span data-lang="de">DE Deutsch</span>
+                <span data-lang="es">ES Español</span>
+                <span data-lang="it">IT Italiano</span>
+                <span data-lang="tr">TR Türkçe</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- الحاوية الأساسية المسؤولة عن بدء تشغيل الأنميشن بالتتابع عبر كلاس الـ "scroll-container" -->
+    <section class="heritage-section scroll-container">
+        <div class="heritage-flex-container">
+            
+            <!-- الجزء الأول: الصورة تظهر أولاً -->
+            <div class="heritage-img-wrapper reveal-item delay-img">
+                <img src="./watch 5.jpg" alt="صناعة الساعات يدوياً">
+            </div>
+
+            <!-- الجزء الثاني: النصوص تظهر بالتوالي سطراً بسطر -->
+            <div class="heritage-text-wrapper">
+                <span class="gold-span reveal-item delay-span" data-key="her_span">منذ 1905</span>
+                <h2 class="main-title reveal-item delay-title" data-key="her_title">إرث من التميز</h2>
+                <p class="desc-text reveal-item delay-desc" data-key="her_desc">تأسست رولكس عام 1905 وكانت رائدة في تطوير ساعة اليد الحديثة — علبة أويستر المقاومة للماء، ودوار بربشوال ذاتي التعبئة، وأول ساعة تعرض منطقتين زمنيتين في آن واحد. قرنٌ من الابتكار على المعصم.</p>
+                
+                <div class="horizontal-stats reveal-item delay-stats">
+                    <div class="stat-item">
+                        <span data-key="stat1">أكثر من 120 عاماً من الحرفية</span>
+                    </div>
+                    <div class="stat-item">
+                        <span data-key="stat2">أكثر من 30 براءة اختراع</span>
+                    </div>
+                    <div class="stat-item">
+                        <span data-key="stat3">ترتاد في كل قمة</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        <p data-key="footer_text">© 2026 ROLEX - جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <script>
+        const translations = {
+            ar: {
+                langBtnText: "🌐 AR العربية", nav_home: "الرئيسية", nav_collection: "المجموعة", nav_heritage: "الإرث", nav_contact: "تواصل",
+                her_span: "منذ 1905", her_title: "إرث من التميز", her_desc: "تأسست رولكس عام 1905 وكانت رائدة في تطوير ساعة اليد الحديثة — علبة أويستر المقاومة للماء، ودوار بربشوال ذاتي التعبئة، وأول ساعة تعرض منطقتين زمنيتين في آن واحد. قرنٌ من الابتكار على المعصم.",
+                stat1: "أكثر من 120 عاماً من الحرفية", stat2: "أكثر من 30 براءة اختراع", stat3: "ترتاد في كل قمة", footer_text: "© 2026 ROLEX - جميع الحقوق محفوظة."
+            },
+            en: {
+                langBtnText: "🌐 EN English", nav_home: "Home", nav_collection: "Collection", nav_heritage: "Heritage", nav_contact: "Contact",
+                her_span: "Since 1905", her_title: "An Elegant Heritage", her_desc: "Rolex was founded in 1905, pioneering the modern wristwatch — the waterproof Oyster case, the perpetual rotor, and the dual time zone display. A century of wrist innovation.",
+                stat1: "Over 120 years of craftsmanship", stat2: "More than 30 patents", stat3: "Pioneering every peak", footer_text: "© 2026 ROLEX - All Rights Reserved."
+            },
+            fr: {
+                langBtnText: "🌐 FR Français", nav_home: "Accueil", nav_collection: "Collection", nav_heritage: "Héritage", nav_contact: "Contact",
+                her_span: "Depuis 1905", her_title: "Un Héritage d'Excellence", her_desc: "Fondée en 1905, Rolex a été pionnière dans le développement de la montre-bracelet moderne — le boîtier Oyster étanche, le rotor Perpetual et le double fuseau horaire. Un siècle d'innovation.",
+                stat1: "Plus de 120 ans de savoir-faire", stat2: "Plus de 30 brevets déposés", stat3: "Présente sur tous les sommets", footer_text: "© 2026 ROLEX - Tous droits réservés."
+            },
+            de: {
+                langBtnText: "🌐 DE Deutsch", nav_home: "Startseite", nav_collection: "Kollektion", nav_heritage: "Erbe", nav_contact: "Kontakt",
+                her_span: "Seit 1905", her_title: "Ein Erbe der Exzellenz", her_desc: "Rolex wurde 1905 gegründet und war Wegbereiter der modernen Armbanduhr — das wasserdichte Oyster-Gehäuse, the Perpetual-Rotor und die Anzeige von zwei Zeitzonen. Ein Jahrhundert voller Innovation.",
+                stat1: "Über 120 Jahre Handwerkskunst", stat2: "Mehr als 30 Patente", stat3: "Pionierarbeit auf jedem Gipfel", footer_text: "© 2026 ROLEX - Alle Rechte vorbehalten."
+            },
+            es: {
+                langBtnText: "🌐 ES Español", nav_home: "Inicio", nav_collection: "Colección", nav_heritage: "Legado", nav_contact: "Contacto",
+                her_span: "Desde 1905", her_title: "Un Legado de Excelencia", her_desc: "Fundada en 1905, Rolex fue pionera en el desarrollo del reloj de pulsera moderno: la caja Oyster impermeable, el rotor Perpetual y el doble huso horario. Un siglo de innovación en la muñeca.",
+                stat1: "Más de 120 años de artesanía", stat2: "Más de 30 patentes registrada", stat3: "Pioneros en cada cumbre", footer_text: "© 2026 ROLEX - Todos los derechos reservados."
+            },
+            it: {
+                langBtnText: "🌐 IT Italiano", nav_home: "Home", nav_collection: "Collezione", nav_heritage: "Eredità", nav_contact: "Contatto",
+                her_span: "Dal 1905", her_title: "Un'Eredità di Eccellenza", her_desc: "Fondata nel 1905, Rolex ha aperto la strada allo sviluppo del moderno orologio da polso: la cassa Oyster impermeabile, il rotore Perpetual e il doppio fuso orario. Un secolo di innovazione al polso.",
+                stat1: "Oltre 120 anni di maestria", stat2: "Più di 30 brevetti", stat3: "Pionieri su ogni vetta", footer_text: "© 2026 ROLEX - Tutti i diritti riservati."
+            },
+            tr: {
+                langBtnText: "🌐 TR Türkçe", nav_home: "Anasayfa", nav_collection: "Koleksiyon", nav_heritage: "Miras", nav_contact: "İletişim",
+                her_span: "1905'ten Beri", her_title: "Mükemmellik Mirası", her_desc: "1905 yılında kurulan Rolex, modern kol saatinin geliştirilmesine öncülük etti — su geçirmez Oyster kasa, Perpetual rotor og çift zaman dilimi göstergesi. Bilekte bir asırlık yenilik.",
+                stat1: "120 yılı aşkın ustalık", stat2: "30'dan fazla patent", stat3: "Her zirvede öncü", footer_text: "© 2026 ROLEX - Tüm Hakları Saklıdır."
+            }
+        };
+
+        function changeLanguage(lang) {
+            const data = translations[lang];
+            if (!data) return;
+            localStorage.setItem('selectedLanguage', lang);
+            const langBtn = document.getElementById('langBtn');
+            if (langBtn && data.langBtnText) langBtn.innerHTML = data.langBtnText;
+            
+            const htmlElement = document.documentElement;
+            if (lang === 'ar') {
+                htmlElement.setAttribute('dir', 'rtl');
+                htmlElement.setAttribute('lang', 'ar');
+            } else {
+                htmlElement.setAttribute('dir', 'ltr');
+                htmlElement.setAttribute('lang', lang);
+            }
+
+            document.querySelectorAll('[data-key]').forEach(element => {
+                const key = element.getAttribute('data-key');
+                if (data[key]) element.innerText = data[key];
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('selectedLanguage') || 'ar';
+            changeLanguage(savedLang);
+
+            document.body.addEventListener('click', (e) => {
+                if (e.target.matches('#langDropdown span')) {
+                    const selectedLang = e.target.getAttribute('data-lang');
+                    changeLanguage(selectedLang);
+                    const dropdown = document.getElementById('langDropdown');
+                    if (dropdown) dropdown.classList.remove('show');
+                }
+            });
+
+            const langBtn = document.getElementById('langBtn');
+            const dropdown = document.getElementById('langDropdown');
+            if (langBtn && dropdown) {
+                langBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    dropdown.classList.toggle('show');
+                });
+                document.addEventListener('click', () => { dropdown.classList.remove('show'); });
+            }
+
+            /* تشغيل أنميشن التتابع المتقدم */
+            const scrollContainers = document.querySelectorAll('.scroll-container');
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('reveal-active');
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            }, { threshold: 0.05 });
+
+            scrollContainers.forEach(el => revealObserver.observe(el));
+        });
+    </script>
+</body>
+</html>
